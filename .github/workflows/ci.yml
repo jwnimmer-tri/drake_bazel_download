@@ -23,6 +23,30 @@ concurrency:
   group: ${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 jobs:
+  ubuntu_focal:
+    name: ubuntu 20.04 focal
+    runs-on: ubuntu-latest
+    container: ubuntu:focal
+    steps:
+      - name: apt
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends build-essential ca-certificates
+        shell: bash
+      - uses: bazelbuild/setup-bazelisk@v2
+      - name: checkout
+        uses: actions/checkout@v3
+        if: ${{ ! inputs.skip_checkout }}
+      - name: prereqs
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: bazel run //:install_prereqs
+        shell: bash
+        working-directory: ${{ inputs.working_directory }}
+      - name: test
+        run: bazel test //...
+        shell: bash
+        working-directory: ${{ inputs.working_directory }}
   ubuntu_jammy:
     name: ubuntu 22.04 jammy
     runs-on: ubuntu-latest
