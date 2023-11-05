@@ -37,11 +37,11 @@ jobs:
       - name: checkout
         uses: actions/checkout@v3
         if: ${{ ! inputs.skip_checkout }}
-      - name: setup
+      - name: prereqs
         run: bazel run //:install_prereqs
         shell: bash
         working-directory: ${{ inputs.working_directory }}
-      - name: build and test
+      - name: test
         run: bazel test //...
         shell: bash
         working-directory: ${{ inputs.working_directory }}
