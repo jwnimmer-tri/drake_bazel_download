@@ -14,12 +14,12 @@ def _calc_codename(repo_ctx):
             "bash", "-c", "source /etc/lsb-release; echo $DISTRIB_CODENAME",
         ])
         if result.return_code != 0:
-            fail("Failure during /usr/bin/lsb_release -sr")
+            fail("Failure checking /etc/lsb_release")
         codename = result.stdout.strip()
         if codename == "focal" or codename == "jammy":
             return codename
         else:
-            fail("Unknown OS release '{}'".format(os_release))
+            fail("Unknown OS release '{}'".format(codename))
     elif os_name == "mac os x":
         if os_arch == "aarch64":
             return "mac-arm64"
