@@ -11,9 +11,9 @@ on:
       - main
   workflow_call:
     inputs:
-      checkout:
+      skip_checkout:
         type: boolean
-        default: true
+        default: false
       working_directory:
         type: string
         default: .
@@ -30,7 +30,7 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
-        if: ${{ inputs.checkout }}
+        if: ${{ ! inputs.skip_checkout }}
       - name: setup
         run: bazel run //:install_prereqs
         shell: bash
@@ -46,7 +46,7 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
-        if: ${{ inputs.checkout }}
+        if: ${{ ! inputs.skip_checkout }}
       - name: setup
         run: bazel run //:install_prereqs
         shell: bash
