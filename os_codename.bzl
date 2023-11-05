@@ -10,14 +10,14 @@ def _calc_codename(repo_ctx):
     os_name = repo_ctx.os.name  # "linux" or "mac os x"
     os_arch = repo_ctx.os.arch  # "amd64" or "aarch64"
     if os_name == "linux":
-        result = repo_ctx.execute(["/usr/bin/lsb_release", "-sr"])
+        result = repo_ctx.execute([
+            "bash", "-c", "source /etc/lsb-release; echo $DISTRIB_CODENAME",
+        ])
         if result.return_code != 0:
             fail("Failure during /usr/bin/lsb_release -sr")
-        os_release = result.stdout.strip()
-        if os_release == "22.04":
-            return "jammy"
-        elif os_release == "20.04":
-            return "focal"
+        codename = result.stdout.strip()
+        if codename == "focal" or codename == "jammy":
+            return codename
         else:
             fail("Unknown OS release '{}'".format(os_release))
     elif os_name == "mac os x":
