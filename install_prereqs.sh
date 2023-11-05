@@ -19,9 +19,9 @@ fi
 # need root access.
 cd $(dirname $(readlink -f external/drake_artifacts/share/drake/setup/install_prereqs))
 if [[ $(uname) == "Darwin" ]]; then
-  ./install_prereqs
+  ./install_prereqs -y
 elif [[ "${EUID}" -eq 0 ]]; then
-  ./install_prereqs
+  ./install_prereqs -y
 else
-  sudo ./install_prereqs
+  sudo ./install_prereqs -y
 fi
