@@ -12,7 +12,7 @@ on:
   workflow_call:
     inputs:
       checkout:
-        type: bool
+        type: boolean
         default: true
       working_directory:
         type: string
